@@ -1,0 +1,36 @@
+# Define the path to the list of strings and the template file
+$folderPath = "C:\Users\mgilmore\My_Stuff\Powershell\"
+cd $folderPath
+$listFilePath = "list.txt"  # The file with the list of strings
+$templateFilePath = "close_alarm.txt"  # The template file
+
+# Define the substitution string in the template
+$substitutionString = "%EVENT_ID%"
+
+# Read the list of strings into an array
+$stringList = Get-Content -Path $listFilePath
+
+# Read the template content
+$templateContent = Get-Content -Path $templateFilePath -Raw
+
+# Loop through each string in the list
+foreach ($string in $stringList) {
+    # Skip empty lines
+    if ([string]::IsNullOrWhiteSpace($string)) {
+        continue
+    }
+
+    # Replace the placeholder in the template with the current string
+    $modifiedContent = $templateContent -replace [regex]::Escape($substitutionString), $string
+
+    # Define the filename for the modified content
+    $filename = $string + ".txt"
+    # Replace any characters that are not allowed in filenames
+    $filename = $filename -replace '[\\/:*?"<>|]', ''
+
+    # Save the modified content to a new file
+    $modifiedContent | Out-File -FilePath $filename -Encoding UTF8
+    Write-Host "Wrote: $filename"
+}
+
+Write-Host "Files have been created for each string in the list."
