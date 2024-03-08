@@ -14,16 +14,16 @@ void loop() {
   if (Serial.available() > 0) {
     String command = Serial.readStringUntil('\n'); 
 
-    if (command.startsWith("PRINT")) {
+    if (command.startsWith("PRINT ")) {
       //digitalWrite(ledPin, HIGH); // Turn on the LED
       String content = command.substring(6);
       Keyboard.println(content);
     }
-    if (command.startsWith("SLOW")) {
+    if (command.startsWith("SLOW ")) {
       //digitalWrite(ledPin, HIGH); // Turn on the LED
       String content = command.substring(5);
       for (int i = 0; i < content.length(); i++) {
-        Serial.print(content[i]);
+        Keyboard.print(content[i]);
         delay(120);
       }
     }
