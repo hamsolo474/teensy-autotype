@@ -26,5 +26,6 @@ void loop() {
         Keyboard.print(content[i]);
         delay(120);
       }
+      Keyboard.print("\n");
     }
   }
